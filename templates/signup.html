@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up - One Pension One ID</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md fixed-top navbar-shrink py-3" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/"><span>One Pension One ID</span></a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1">
+                <span class="visually-hidden">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <!-- <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Log in</a></li> -->
+                </ul>
+                <!-- <a class="btn btn-primary shadow" role="button" href="{% url 'signup' %}">Sign up</a> -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Signup Section -->
+    <section class="py-5 my-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center mb-4 mb-md-0">
+                    <img class="img-fluid w-100" src="{% static 'assets/img/illustrations/register.svg' %}" alt="Signup Illustration">
+                </div>
+
+                <div class="col-md-6 col-lg-5 offset-lg-1">
+                    <h2 class="display-6 fw-bold mb-4">Sign up using Aadhaar</h2>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input class="form-control" type="text" name="aadhaar_number" placeholder="Enter Aadhaar Number" required>
+                        </div>
+                        <button class="btn btn-primary w-100" type="submit">Sign up</button>
+                    </form>
+
+                    <p class="text-muted mt-3 text-center">
+                        Already registered? <a href="{% url 'login' %}">Log in</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    {% if modal %}
+    <div class="modal fade show" id="feedbackModal" tabindex="-1" aria-modal="true" role="dialog" style="display: block;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ modal.title }}</h5>
+                </div>
+                <div class="modal-body">
+                    <p>{{ modal.message }}</p>
+                </div>
+                <div class="modal-footer">
+                    {% if modal.type == 'invite' %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="accept_invite" value="1">
+                            <button type="submit" class="btn btn-primary">Accept Invite</button>
+                        </form>
+                        <a href="{% url 'signup' %}" class="btn btn-secondary">Cancel</a>
+                    {% else %}
+                        <a href="{% url 'signup' %}" class="btn btn-secondary">Close</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.body.classList.add('modal-open');
+        document.body.style.overflow = 'hidden';
+    </script>
+    {% endif %}
+
+    <!-- Footer -->
+    <footer class="bg-light text-muted">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">© 2025 One Pension One ID</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="me-3">Privacy</a>
+                    <a href="#">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'assets/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

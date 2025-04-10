@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Life Certificate History</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="container py-5 mt-5">
+
+    <h3 class="mb-4 text-center">📄 My Life Certificate History</h3>
+
+    {% if certificates %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-primary text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Submitted At</th>
+                        <th>Status</th>
+                        <th>Remarks</th>
+                        <th>Certificate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cert in certificates %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ cert.submitted_at|date:"Y-m-d H:i" }}</td>
+                        <td>{{ cert.status }}</td>
+                        <td>{{ cert.remarks|default:"—" }}</td>
+                        <td><a href="{{ cert.certificate.url }}" target="_blank" class="btn btn-sm btn-outline-primary">View</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            No life certificates submitted yet.
+        </div>
+    {% endif %}
+</div>
+
+<script src="{% static 'assets/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

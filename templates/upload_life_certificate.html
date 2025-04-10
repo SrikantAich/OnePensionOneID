@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Submit Life Certificate</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+  
+</head>
+<body class="bg-light">
+
+<!-- ✅ Navbar -->
+<!-- Navbar -->
+{% include 'navbar.html' %}
+<!-- ✅ Page Content -->
+<div class="container py-5 mt-5 pt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">📸 Submit Life Certificate</h4>
+                </div>
+                <div class="card-body p-4">
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+
+                        <!-- Webcam & Photo Section -->
+                        <div class="text-center my-4">
+                            <video id="video" width="320" height="240" autoplay></video>
+                            <canvas id="canvas" width="320" height="240" class="d-none mt-2"></canvas>
+                            <input type="hidden" name="captured_photo" id="captured_photo">
+                        </div>
+
+                        <!-- Capture/Retake Buttons -->
+                        <div class="text-center mb-4">
+                            <button type="button" id="captureBtn" class="btn btn-warning me-2" onclick="takeSnapshot()">📸 Capture Photo</button>
+                            <!-- <button type="button" id="retakeBtn" class="btn btn-secondary btn-retake" onclick="retakePhoto()">🔁 Retake</button> -->
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Submit Certificate</button>
+                    </form>
+                    <a href="{% url 'life_certificate_history' %}">History</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ Scripts -->
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const photoInput = document.getElementById('captured_photo');
+    const captureBtn = document.getElementById('captureBtn');
+    const retakeBtn = document.getElementById('retakeBtn');
+    let streamRef = null;
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            streamRef = stream;
+            video.srcObject = stream;
+        })
+        .catch(err => {
+            console.error("Webcam access error:", err);
+        });
+
+    function takeSnapshot() {
+        canvas.classList.remove('d-none');
+        const context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataURL = canvas.toDataURL('image/png');
+        photoInput.value = dataURL;
+
+        video.style.display = 'none';
+        captureBtn.style.display = 'none';
+        retakeBtn.style.display = 'inline-block';
+    }
+
+    function retakePhoto() {
+        canvas.classList.add('d-none');
+        video.style.display = 'block';
+        captureBtn.style.display = 'inline-block';
+        retakeBtn.style.display = 'none';
+    }
+</script>
+
+<script src="{% static 'assets/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

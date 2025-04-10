@@ -1,0 +1,226 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - One Pension One ID</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap & Fonts -->
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+
+    <style>
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .dashboard-card {
+            height: 100%;
+            transition: transform 0.2s ease-in-out;
+            border: none;
+            border-radius: 15px;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .card-title {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .card-data {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<section class="py-5 mt-5">
+    <div class="container text-center">
+        <h2 class="mb-4 fw-bold">👋 Welcome, <strong>{{ user.username }}</strong></h2>
+        <div class="row g-4 justify-content-center">
+            <section class="container mt-5">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">📢 Announcements</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% if announcements %}
+                            {% for ann in announcements %}
+                                <li class="list-group-item">
+                                    <strong>{{ ann.title }}</strong><br>
+                                    <small class="text-muted">{{ ann.date_posted|date:"d M Y, h:i A" }}</small>
+                                    <p class="mb-0">{{ ann.content }}</p>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="list-group-item">No announcements at the moment.</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </section>
+            <!-- Last Pension Credit -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card dashboard-card shadow text-white" style="background: linear-gradient(to right, #667eea, #764ba2);">
+                    <div class="card-body p-4">
+                        <lord-icon
+                            src="https://cdn.lordicon.com/ivhjpjsw.json"
+                            trigger="loop"
+                            delay="2500"
+                            style="width:50px;height:50px">
+                        </lord-icon>
+                        <h5 class="card-title">Last Pension Credit</h5>
+                        <div class="card-data">₹{{ last_transaction.amount|default:"0.00" }}</div>
+                        <div class="card-data">{{ last_transaction.created_at|date:"d M, Y" }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Grievances -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card dashboard-card shadow text-white" style="background: linear-gradient(to right, #ff416c, #ff4b2b);">
+                    <div class="card-body p-4">
+                        <lord-icon
+                            src="https://cdn.lordicon.com/wzrwaorf.json"
+                            trigger="loop"
+                            delay="2000"
+                            style="width:50px;height:50px">
+                        </lord-icon>
+                        <h5 class="card-title">Pending Grievances</h5>
+                        <div class="card-data">{{ pending_grievances }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Life Certificate Verification -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card dashboard-card shadow text-white" style="background: linear-gradient(to right, #00c6ff, #0072ff);">
+                    <div class="card-body p-4">
+                        <lord-icon
+                            src="https://cdn.lordicon.com/wxnxiano.json"
+                            trigger="loop"
+                            delay="2000"
+                            style="width:50px;height:50px">
+                        </lord-icon>
+                        <h5 class="card-title">Pending Verifications</h5>
+                        <div class="card-data">{{ pending_verifications }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Last Life Certificate Submitted -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card dashboard-card shadow text-white" style="background: linear-gradient(to right, #11998e, #38ef7d);">
+                    <div class="card-body p-4">
+                        <lord-icon
+                            src="https://cdn.lordicon.com/wxnxiano.json"
+                            trigger="loop"
+                            delay="2000"
+                            style="width:50px;height:50px">
+                        </lord-icon>
+                        <h5 class="card-title">Life Certificate Next Due:</h5>
+                        <div class="card-data">
+                            {% if last_life_certificate %}
+                            <div class="card-data">{{ next_due_date|date:"d M, Y" }}</div>
+                                <!-- <p class="mb-0"><strong>Next Due:</strong> {{ next_due_date|date:"d M, Y" }}</p> -->
+                            {% else %}
+                                <p>—</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+
+            <!-- FAQ Section -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <h3 class="text-center mb-4">❓ Frequently Asked Questions</h3>
+        <div class="accordion" id="faqAccordion">
+
+            <!-- FAQ 1 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1-heading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
+                        How often do I need to submit my Life Certificate?
+                    </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse show" aria-labelledby="faq1-heading" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Life Certificates must be submitted **once every year**. The next due date is calculated as 11 months from your last submission.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2-heading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+                        Where can I check my pension transaction history?
+                    </button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse" aria-labelledby="faq2-heading" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        You can view your pension transactions by clicking on the “Pension Transactions” button on your dashboard.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3-heading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+                        What happens if I miss the life certificate deadline?
+                    </button>
+                </h2>
+                <div id="faq3" class="accordion-collapse collapse" aria-labelledby="faq3-heading" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        If you miss the deadline, your pension disbursement may be temporarily paused until the certificate is submitted.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4-heading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+                        How can I raise a grievance?
+                    </button>
+                </h2>
+                <div id="faq4" class="accordion-collapse collapse" aria-labelledby="faq4-heading" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Go to the "Submit Grievance" section on your dashboard and fill out the required details. Our team will get back to you within 5 working days.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+        </div>
+    </div>
+</section>
+
+<footer class="bg-light text-muted mt-auto py-3">
+    <div class="container text-center">
+        <small>© 2025 One Pension One ID. All rights reserved.</small>
+    </div>
+</footer>
+
+<script src="{% static 'assets/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

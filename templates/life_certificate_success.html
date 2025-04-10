@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Life Certificate Submitted</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+</head>
+<body class="bg-light">
+
+{% include 'navbar.html' %}
+
+<div class="container mt-5 pt-5 text-center">
+    <div class="alert alert-success shadow-sm p-4">
+        <h3 class="mb-3">✅ Life Certificate Submitted</h3>
+        <p>Your certificate has been successfully uploaded. It will be reviewed by an official shortly.</p>
+        <a href="{% url 'home' %}" class="btn btn-primary mt-3">Back to Dashboard</a>
+    </div>
+</div>
+
+<script src="{% static 'assets/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
