@@ -29,7 +29,7 @@ It simplifies pension tracking, grievance redressal, announcements, and life cer
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/one-pension-one-id.git
+   git clone https://github.com/SrikantAich/OnePensionOneID.git
    cd one-pension-one-id
    ```
 
