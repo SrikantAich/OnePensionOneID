@@ -90,7 +90,7 @@ Warm regards,
 One Pension One ID Team
                 """.strip()
 
-                send_mail(subject, email_message, settings.EMAIL_HOST_USER, ['1062000k@gmail.com'], fail_silently=False)
+                send_mail(subject, email_message, settings.EMAIL_HOST_USER, ['useremail.com'], fail_silently=False)
 
                 request.session.pop('signup_aadhaar', None)
                 request.session.pop('signup_user_id', None)
@@ -187,7 +187,7 @@ User {user.username} has logged in to the portal.
 Best regards,  
 One Pension One ID Security Team
             """.strip()
-            send_mail(subject, email_message, settings.EMAIL_HOST_USER, ['1062000k@gmail.com'], fail_silently=False)
+            send_mail(subject, email_message, settings.EMAIL_HOST_USER, ['useremail'], fail_silently=False)
 
             if user.force_password_reset:
                 messages.info(request, "Please reset your password before continuing.")
@@ -232,7 +232,7 @@ Security Tips:
 Sincerely,  
 One Pension One ID Security Team
                 """.strip()
-                send_mail(subject, email_message, settings.EMAIL_HOST_USER, ['1062000k@gmail.com'], fail_silently=False)
+                send_mail(subject, email_message, settings.EMAIL_HOST_USER, ['usermail'], fail_silently=False)
 
                 return redirect('home')
 
@@ -277,7 +277,7 @@ Sincerely,
 One Pension One ID Team
             """.strip()
 
-            send_mail(subject, email_message, settings.EMAIL_HOST_USER, ['1062000k@gmail.com'])
+            send_mail(subject, email_message, settings.EMAIL_HOST_USER, ['usermail'])
 
             request.session['otp_user_id'] = user.id
             messages.success(request, "An OTP has been sent to your email. Click OK to proceed.")
@@ -403,7 +403,7 @@ Email: support@onepension.com
 
 """.strip()
 
-            send_mail(subject, email_message, settings.EMAIL_HOST_USER, ['1062000k@gmail.com'], fail_silently=False)
+            send_mail(subject, email_message, settings.EMAIL_HOST_USER, ['usermail'], fail_silently=False)
 
             messages.success(request, "Your password has been reset successfully. You can now log in.")
             return redirect('login')
