@@ -1,8 +1,11 @@
 # One Pension One ID
 
 > A modern pension management system for seamless pension tracking, grievance handling, and certificate management — all tied to a single ID.
+# 📁 Project Report
+
 
 ## 📚 About
+[Final Submission.pdf](https://github.com/user-attachments/files/19976548/Final.Submission.pdf)
 
 **One Pension One ID** is a Django-powered web application designed to centralize pensioner information and services.  
 It simplifies pension tracking, grievance redressal, announcements, and life certificate submissions — all in one place.
